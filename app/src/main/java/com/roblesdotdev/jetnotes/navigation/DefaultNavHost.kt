@@ -1,7 +1,11 @@
 package com.roblesdotdev.jetnotes.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -30,7 +34,9 @@ fun DefaultNavHost(
         }
 
         composable<NavDestination.Home> {
-            Text("Home Screen not implemented yet!")
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Home Screen not implemented yet!")
+            }
         }
     }
 }

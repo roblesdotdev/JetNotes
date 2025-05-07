@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
@@ -34,14 +35,21 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                viewModel.state.isLoading
+            }
+        }
         enableEdgeToEdge()
         setContent {
             JetNotesTheme {
-                val navController = rememberNavController()
-                DefaultNavHost(
-                    navController = navController,
-                    startDestination = getStartDestination(viewModel.hasSeenOnboarding.value)
-                )
+                if (!viewModel.state.isLoading) {
+                    val navController = rememberNavController()
+                    DefaultNavHost(
+                        navController = navController,
+                        startDestination = getStartDestination(viewModel.state.hasSeenOnboarding)
+                    )
+                }
             }
         }
     }
