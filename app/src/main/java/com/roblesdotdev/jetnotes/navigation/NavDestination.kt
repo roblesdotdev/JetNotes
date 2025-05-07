@@ -2,8 +2,10 @@ package com.roblesdotdev.jetnotes.navigation
 
 import kotlinx.serialization.Serializable
 
-@Serializable
-object Onboarding
+sealed class NavDestination {
+    @Serializable
+    object Onboarding: NavDestination()
 
-@Serializable
-object Home
+    @Serializable
+    object Home: NavDestination()
+}
