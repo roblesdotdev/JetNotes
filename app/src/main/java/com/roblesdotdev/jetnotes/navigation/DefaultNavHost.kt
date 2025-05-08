@@ -6,13 +6,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.roblesdotdev.jetnotes.onboarding.data.repository.DefaultOnboardingRepository
 import com.roblesdotdev.jetnotes.onboarding.presentation.OnboardingScreen
-import com.roblesdotdev.jetnotes.onboarding.presentation.OnboardingViewModel
 
 @Composable
 fun DefaultNavHost(
@@ -21,11 +18,7 @@ fun DefaultNavHost(
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable<NavDestination.Onboarding> {
-            val context = LocalContext.current
             OnboardingScreen(
-                viewModel = OnboardingViewModel(repo = DefaultOnboardingRepository(
-                    context = context
-                )),
                 onGetStarted = {
                     navController.popBackStack()
                     navController.navigate(NavDestination.Home)

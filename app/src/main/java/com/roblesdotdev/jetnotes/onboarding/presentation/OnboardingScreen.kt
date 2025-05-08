@@ -12,10 +12,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun OnboardingScreen(
-    viewModel: OnboardingViewModel,
+    viewModel: OnboardingViewModel = hiltViewModel(),
     onGetStarted: () -> Unit
 ) {
     val hasSeenOnboarding = viewModel.hasSeenOnboarding.value
