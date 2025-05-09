@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.roblesdotdev.jetnotes.home.presentation.detail.DetailScreen
 import com.roblesdotdev.jetnotes.home.presentation.list.ListScreen
 import com.roblesdotdev.jetnotes.onboarding.presentation.OnboardingScreen
@@ -30,9 +29,14 @@ fun DefaultNavHost(
             })
         }
 
-        composable<NavDestination.Detail> { backStackEntry ->
-            val detail = backStackEntry.toRoute<NavDestination.Detail>()
-            DetailScreen()
+        composable<NavDestination.Detail> {
+            DetailScreen(
+                onSave = {
+                    navController.popBackStack()
+                },
+                onDelete = {
+                    navController.popBackStack()
+                })
         }
     }
 }

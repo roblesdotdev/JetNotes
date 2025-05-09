@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,9 +23,16 @@ import com.roblesdotdev.jetnotes.ui.theme.JetNotesTheme
 
 @Composable
 fun DetailScreen(
-    viewModel: DetailViewModel = hiltViewModel()
+    viewModel: DetailViewModel = hiltViewModel(),
+    onSave: () -> Unit,
+    onDelete: () -> Unit,
 ) {
-    val state = viewModel.state
+
+    LaunchedEffect(viewModel.state.isSaved) {
+        if (viewModel.state.isSaved) {
+            onSave()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -40,14 +48,14 @@ fun DetailScreen(
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Note title") },
-                value = state.title,
+                value = viewModel.state.title,
                 onValueChange = { viewModel.onEvent(DetailEvent.OnChangeTitle(it)) },
                 shape = RoundedCornerShape(8.dp)
             )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text("Note description") },
-                value = state.description,
+                value = viewModel.state.description,
                 onValueChange = { viewModel.onEvent(DetailEvent.OnChangeDescription(it)) },
                 shape = RoundedCornerShape(8.dp)
             )
@@ -57,11 +65,14 @@ fun DetailScreen(
                     .height(56.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text(if (state.id == null) "Create" else "Update")
+                Text(if (viewModel.state.id == null) "Create" else "Update")
             }
-            if (state.id != null) {
+            if (viewModel.state.id != null) {
                 TextButton(
-                    onClick = {},
+                    onClick = {
+                        viewModel.onEvent(DetailEvent.OnDelete)
+                        onDelete()
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)
@@ -80,6 +91,9 @@ fun DetailScreen(
 @Composable
 private fun DetailScreenPreview() {
     JetNotesTheme {
-        DetailScreen()
+        DetailScreen(
+            onSave = {},
+            onDelete = {}
+        )
     }
 }

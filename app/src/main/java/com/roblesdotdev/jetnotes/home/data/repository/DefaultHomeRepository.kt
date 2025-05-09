@@ -13,4 +13,22 @@ class DefaultHomeRepository : HomeRepository {
     override fun getAllNotes(): Flow<List<Note>> {
         return flowOf(mockNotes)
     }
+
+    override suspend fun getNoteById(id: String): Note {
+        return mockNotes.first { it.id == id }
+    }
+
+    override suspend fun deleteNote(id: String) {
+        mockNotes.removeIf { it.id == id }
+    }
+
+    override suspend fun upsertNote(note: Note) {
+        val idx = mockNotes.indexOfFirst { it.id == note.id }
+        if (idx == -1) {
+            mockNotes.add(note)
+        } else {
+            mockNotes.removeAt(idx)
+            mockNotes.add(idx, note)
+        }
+    }
 }
