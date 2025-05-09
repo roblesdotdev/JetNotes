@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
+import com.roblesdotdev.jetnotes.home.presentation.detail.DetailScreen
 import com.roblesdotdev.jetnotes.home.presentation.list.ListScreen
 import com.roblesdotdev.jetnotes.onboarding.presentation.OnboardingScreen
 
@@ -23,9 +25,14 @@ fun DefaultNavHost(
         }
 
         composable<NavDestination.Home> {
-            ListScreen(onAddNote = {
-                // TODO: navigate to create note screen
+            ListScreen(onNavigateToDetail = { id ->
+                navController.navigate(NavDestination.Detail(id))
             })
+        }
+
+        composable<NavDestination.Detail> { backStackEntry ->
+            val detail = backStackEntry.toRoute<NavDestination.Detail>()
+            DetailScreen()
         }
     }
 }

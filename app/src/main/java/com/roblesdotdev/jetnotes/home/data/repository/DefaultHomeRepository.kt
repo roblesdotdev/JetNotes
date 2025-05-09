@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flowOf
 
 class DefaultHomeRepository : HomeRepository {
     private val mockNotes = (1..5).map {
-        Note(title = "Note $it", description = "Description for note $it")
+        Note(id = "$it", title = "Note $it", description = "Description for note $it")
     }.toMutableList()
 
     override fun getAllNotes(): Flow<List<Note>> {

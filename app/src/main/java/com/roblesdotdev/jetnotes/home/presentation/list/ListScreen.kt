@@ -1,5 +1,6 @@
 package com.roblesdotdev.jetnotes.home.presentation.list
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,8 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,21 +23,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.roblesdotdev.jetnotes.home.presentation.list.components.EmptyListText
+import com.roblesdotdev.jetnotes.home.presentation.components.EmptyListText
+import com.roblesdotdev.jetnotes.home.presentation.components.NotesTopAppBar
 import com.roblesdotdev.jetnotes.ui.theme.JetNotesTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListScreen(viewModel: ListViewModel = hiltViewModel(), onAddNote: () -> Unit) {
+fun ListScreen(viewModel: ListViewModel = hiltViewModel(), onNavigateToDetail: (String?) -> Unit) {
     val isEmpty = viewModel.state.notes.isEmpty()
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Simple Crud", style = MaterialTheme.typography.titleMedium) },
-            )
+            NotesTopAppBar()
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onAddNote) {
+            FloatingActionButton(onClick = {
+                onNavigateToDetail(null)
+            }) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add icon")
             }
         }
@@ -52,12 +51,16 @@ fun ListScreen(viewModel: ListViewModel = hiltViewModel(), onAddNote: () -> Unit
         ) {
             if (isEmpty) {
                 item {
-                    EmptyListText(onClick = onAddNote)
+                    EmptyListText(onClick = {
+                        onNavigateToDetail(null)
+                    })
                 }
             }
             items(viewModel.state.notes) { note ->
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().clickable {
+                        onNavigateToDetail(note.id)
+                    },
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surface,
                     ),
@@ -87,6 +90,6 @@ fun ListScreen(viewModel: ListViewModel = hiltViewModel(), onAddNote: () -> Unit
 @Composable
 private fun ListScreenPreview() {
     JetNotesTheme {
-        ListScreen(onAddNote = {})
+        ListScreen(onNavigateToDetail = {})
     }
 }
