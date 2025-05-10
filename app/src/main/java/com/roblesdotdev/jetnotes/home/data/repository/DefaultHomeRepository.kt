@@ -1,34 +1,35 @@
 package com.roblesdotdev.jetnotes.home.data.repository
 
+import com.roblesdotdev.jetnotes.home.data.local.HomeDao
+import com.roblesdotdev.jetnotes.home.data.mapper.toDomain
+import com.roblesdotdev.jetnotes.home.data.mapper.toEntity
 import com.roblesdotdev.jetnotes.home.domain.models.Note
 import com.roblesdotdev.jetnotes.home.domain.repository.HomeRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
-class DefaultHomeRepository : HomeRepository {
-    private val mockNotes = (1..5).map {
-        Note(id = "$it", title = "Note $it", description = "Description for note $it")
-    }.toMutableList()
-
+class DefaultHomeRepository(
+    private val dao: HomeDao
+) : HomeRepository {
     override fun getAllNotes(): Flow<List<Note>> {
-        return flowOf(mockNotes)
+        return dao.getAllNotes().map {
+            it.map { it.toDomain() }
+        }
     }
 
     override suspend fun getNoteById(id: String): Note {
-        return mockNotes.first { it.id == id }
+        return withContext(Dispatchers.IO) {
+            dao.getNoteById(id).toDomain()
+        }
     }
 
     override suspend fun deleteNote(id: String) {
-        mockNotes.removeIf { it.id == id }
+        dao.deleteNote(id)
     }
 
     override suspend fun upsertNote(note: Note) {
-        val idx = mockNotes.indexOfFirst { it.id == note.id }
-        if (idx == -1) {
-            mockNotes.add(note)
-        } else {
-            mockNotes.removeAt(idx)
-            mockNotes.add(idx, note)
-        }
+        dao.upsertNote(note.toEntity())
     }
 }
