@@ -1,5 +1,7 @@
 package com.roblesdotdev.jetnotes.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,7 +15,12 @@ fun DefaultNavHost(
     navController: NavHostController,
     startDestination: NavDestination
 ) {
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+    ) {
         composable<NavDestination.Onboarding> {
             OnboardingScreen(
                 onGetStarted = {
