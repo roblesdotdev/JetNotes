@@ -15,4 +15,4 @@ in scalable, maintainable, and testable code.
 - MVVM architecture pattern
 - Dependency injection with Hilt
 - Follows Android development best practices
-- 
+
