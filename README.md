@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/31f55402-9b6b-4167-bf09-fd765520565c)
+
+
 # 📝 JetNotes
 
 **JetNotes** is a simple note-taking Android app built with **Kotlin** and **Jetpack Compose**. It follows **Clean Architecture** 
