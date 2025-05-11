@@ -27,11 +27,13 @@ class DetailViewModel @Inject constructor(
         val args = savedStateHandle.toRoute<NavDestination.Detail>()
         if (args.id != null) {
             viewModelScope.launch {
+                state = state.copy(isLoading = true)
                 val note = homeRepository.getNoteById(args.id)
                 state = state.copy(
                     id = note.id,
                     title = note.title,
-                    description = note.description
+                    description = note.description,
+                    isLoading = false
                 )
             }
         }

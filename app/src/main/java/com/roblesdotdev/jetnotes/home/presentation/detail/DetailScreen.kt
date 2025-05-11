@@ -28,6 +28,8 @@ fun DetailScreen(
     onDelete: () -> Unit,
 ) {
 
+    val isLoading = viewModel.state.isLoading
+
     LaunchedEffect(viewModel.state.isSaved) {
         if (viewModel.state.isSaved) {
             onSave()
@@ -63,6 +65,7 @@ fun DetailScreen(
                 onClick = { viewModel.onEvent(DetailEvent.OnSave) }, modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
+                enabled = !isLoading,
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(if (viewModel.state.id == null) "Create" else "Update")
@@ -73,6 +76,7 @@ fun DetailScreen(
                         viewModel.onEvent(DetailEvent.OnDelete)
                         onDelete()
                     },
+                    enabled = !isLoading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp)

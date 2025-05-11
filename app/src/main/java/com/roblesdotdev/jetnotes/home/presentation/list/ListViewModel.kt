@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.roblesdotdev.jetnotes.home.domain.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,9 +21,14 @@ class ListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            homeRepository.getAllNotes().collectLatest { notes ->
+            homeRepository.getAllNotes()
+                .onStart {
+                    state = state.copy(isLoading = true)
+                }
+                .collectLatest { notes ->
                 state = state.copy(
-                    notes = notes
+                    notes = notes,
+                    isLoading = false
                 )
             }
         }

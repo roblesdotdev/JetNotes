@@ -29,7 +29,8 @@ import com.roblesdotdev.jetnotes.ui.theme.JetNotesTheme
 
 @Composable
 fun ListScreen(viewModel: ListViewModel = hiltViewModel(), onNavigateToDetail: (String?) -> Unit) {
-    val isEmpty = viewModel.state.notes.isEmpty()
+    val isLoading = viewModel.state.isLoading
+    val isEmpty = viewModel.state.notes.isEmpty() && !isLoading
     Scaffold(
         topBar = {
             NotesTopAppBar()

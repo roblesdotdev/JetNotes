@@ -5,4 +5,5 @@ data class DetailState(
     val title: String = "",
     val description: String = "",
     val isSaved: Boolean = false,
+    val isLoading: Boolean = false,
 )
