@@ -26,6 +26,7 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel(),
     onSave: () -> Unit,
     onDelete: () -> Unit,
+    onBack: () -> Unit,
 ) {
 
     val isLoading = viewModel.state.isLoading
@@ -38,7 +39,7 @@ fun DetailScreen(
 
     Scaffold(
         topBar = {
-            NotesTopAppBar()
+            NotesTopAppBar(onBack = { onBack() })
         }
     ) { innerPadding ->
         Column(
@@ -97,7 +98,8 @@ private fun DetailScreenPreview() {
     JetNotesTheme {
         DetailScreen(
             onSave = {},
-            onDelete = {}
+            onDelete = {},
+            onBack = {}
         )
     }
 }

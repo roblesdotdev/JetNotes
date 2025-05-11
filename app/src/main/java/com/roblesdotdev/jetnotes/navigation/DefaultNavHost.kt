@@ -43,7 +43,11 @@ fun DefaultNavHost(
                 },
                 onDelete = {
                     navController.popBackStack()
-                })
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
